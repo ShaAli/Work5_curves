@@ -9,7 +9,7 @@ def make_hermite():
     return hermmat
 
 def generate_curve_coefs( p1, p2, p3, p4, t ):
-    points = [ [p1,p2,p3,p4] ]
+    points = [ [p1,p2,p3,p4] ] #4X1 to be able to multiply
     if t == 'bezier':
         matrix_mult(make_bezier(), points)
     if t == 'hermite':
