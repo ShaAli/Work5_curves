@@ -20,8 +20,8 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     xco = generate_curve_coefs(x0,x1,x2,x3,curve_type)[0]
     yco = generate_curve_coefs(y0,y1,y2,y3,curve_type)[0]
     while t < 1.001:
-            x1 = xco[0]*t**3 + x_coef[1]*t**2 + x_coef[2]*t + x_coef[3]
-            y1 = yco[0]*t**3 + y_coef[1]*t**2 + y_coef[2]*t + y_coef[3]
+            x1 = xco[0]*t**3 + xco[1]*t**2 + xco[2]*t + xco[3] #next xcor
+            y1 = yco[0]*t**3 + yco[1]*t**2 + yco[2]*t + yco[3] #next ycor
             t+= step
             add_edge(points,x0,y0,0,x1,y1,0)
             x0 = x1
