@@ -4,26 +4,31 @@ from matrix import *
 
 def add_circle( points, cx, cy, cz, r, step ):
     t = 0
-    x = r * math.cos(0) + cx
-    y = r * math.sin(0) + cy
+    x = cx + r * math.cos(0)
+    y = cy + r * math.sin(0)
     while t <= 1.001:
+        th = (t)*2*math.pi
+        x1 = cx + r * math.cos(th) #next xcor
+        y1 = cy + r * math.sin(th) #next ycor
+        z = cz #not being used
         t += step
-        x1 = r * math.cos(2*math.pi*t) + cx #next xcor
-        y1 = r * math.sin(2*math.pi*t) + cy #next ycor
-        add_edge(points,x,y,cz,x1,y1,cz)
+        add_edge(points, x, y, cz, x1, y1, cz)
         x = x1
         y = y1
     
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     t = 0
-    xco = generate_curve_coefs(x0,x1,x2,x3,curve_type)[0]
-    yco = generate_curve_coefs(y0,y1,y2,y3,curve_type)[0]
-    while t < 1.001:
-            x1 = xco[0]*t**3 + xco[1]*t**2 + xco[2]*t + xco[3] #next xcor
-            y1 = yco[0]*t**3 + yco[1]*t**2 + yco[2]*t + yco[3] #next ycor
-            t+= step
-            add_edge(points,x0,y0,0,x1,y1,0)
+    #get the bezier/hermite curve matrix and multiply by point matrix
+    matx = generate_curve_coefs(x0, x1, x2, x3, curve_type)
+    maty = generate_curve_coefs(y0, y1, y2, y3, curve_type)
+    xco = matx[0] 
+    yco = maty[0]
+    while t <= 1.001:
+            x1 = (xco[0])*t**3 + (xco[1])*t**2 + (xco[2])*t + (xco[3]) #next xcor
+            y1 = (yco[0])*t**3 + (yco[1])*t**2 + (yco[2])*t + (yco[3]) #next ycor
+            t += step
+            add_edge(points, x0, y0, 0, x1, y1, 0)
             x0 = x1
             y0 = y1
 
